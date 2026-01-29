@@ -1,1 +1,1 @@
-@php "%~dp0guess-the-number" %*
+@php "%~dp0guess-the-number.php" %*
