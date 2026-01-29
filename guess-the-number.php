@@ -20,5 +20,27 @@ function welcomeMsg() {
     return $userDifficultyChoice; 
 }
 
+// 1. Show menu and get first attempt
+$rawInput = welcomeMsg();
 
+function validateDifficultyChoice($choice) {
+    $validOptions = ['1', '2', '3'];
+    $attempts = 1;
+
+    while (!in_array($choice, $validOptions)) {
+        if ($attempts > 5) {
+            echo "Stop playing! No game for you, Bye!". PHP_EOL;
+            exit(1);
+        }
+        
+        echo "Invalid input! Please only type 1, 2, or 3." . PHP_EOL . PHP_EOL;
+        $choice = trim(readline("Enter your choice please: "));
+
+        $attempts++;
+    }
+
+    return $choice;
+}
+
+$difficultyLevel = validateDifficultyChoice($rawInput);
 
