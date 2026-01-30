@@ -32,3 +32,7 @@ A fun, interactive command-line game where the player tries to guess a secret nu
 
 ## 📝 Requirements
 - PHP 8.0 or higher.
+
+## Inspiration 
+
+- Project was done on instructions from the backend projects beginner page on roadmap.sh https://roadmap.sh/projects/number-guessing-game
