@@ -28,6 +28,7 @@ A fun, interactive command-line game where the player tries to guess a secret nu
 3. **Run the game:**
 
    Windows: Just type guess-the-number
+   
    Linux/Mac: Run php guess-the-number.php
 
 ## 📝 Requirements
