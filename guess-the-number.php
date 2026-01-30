@@ -15,7 +15,8 @@ function welcomeMsg() {
     echo "1. Easy (10 chances)" . PHP_EOL;
     echo "2. Medium (5 chances)" . PHP_EOL;
     echo "3. Hard (3 chances)" . PHP_EOL . PHP_EOL;
-    $userDifficultyChoice = readline("Enter your choice please: ");
+    $userDifficultyChoice = trim(readline("Enter your choice please: "));
+
     return $userDifficultyChoice; 
 }
 // 1. Show menu and get first attempt
@@ -26,7 +27,7 @@ function validateDifficultyChoice($choice) {
 
     while (!in_array($choice, $validOptions)) {
         if ($attempts > 5) {
-            echo "Stop playing! No game for you, Bye!". PHP_EOL;
+            echo "Stop missing around! No game for you, Bye!". PHP_EOL;
             exit(1);
         }
         
@@ -56,6 +57,58 @@ $difficultyConfig = getDifficultyConfig($difficultyLevel);
 $levelName = $difficultyConfig['name'];
 $totalChances = $difficultyConfig['chances'];
 
-echo "Great! You have selected the $levelName difficulty level." . PHP_EOL;
-echo "Let's start the game!" . PHP_EOL;
+echo PHP_EOL . "Great! You have selected the $levelName difficulty level." . PHP_EOL;
+echo "Let's start the game!" . PHP_EOL . PHP_EOL;
 
+function generateSecretNumber() {
+    // includes 1 and 100
+    return rand(1, 100);
+}
+
+$randomNumber = generateSecretNumber();
+
+// just for testing
+echo $randomNumber . "\n\n";
+
+$attempts = 0;
+
+while ($totalChances != 0) {
+    $playerGuess = trim(readline("Enter your guess: "));
+
+    if (isInvalidGuess($playerGuess)) continue;
+    
+    $totalChances--;
+    $attempts++;
+
+    
+    if ($playerGuess == $randomNumber) {
+        echo PHP_EOL . "Congratulations! You've guessed the correct number in $attempts attempts." . PHP_EOL;
+        exit(0);
+    }
+
+    if ($playerGuess > $randomNumber) {
+        echo "Incorrect! The number is less than $playerGuess." . PHP_EOL;
+    } else {
+        echo "Incorrect! The number is more than $playerGuess." . PHP_EOL;
+    }
+
+    if ($totalChances > 0) {
+        echo "You have $totalChances chances left." . PHP_EOL . PHP_EOL;
+    }
+}
+
+echo PHP_EOL . "Game over! You have no attempts left. The right number was $randomNumber" . PHP_EOL;
+
+function isInvalidGuess($guessInput) {
+    if (!is_numeric($guessInput)) {
+        echo "That's not a number! Try again." . PHP_EOL . PHP_EOL;
+        return true;
+    }
+
+    if ($guessInput < 1 || $guessInput > 100) {
+        echo "You have to choose between 1 and 100!" . PHP_EOL . PHP_EOL;
+        return true;
+    }
+
+    return false;
+}
