@@ -12,59 +12,78 @@ if ($argc > 1) {
     exit(1); // Stop the program with an error code
 }
 
-// 2. Game Setup
-$rawInput = welcomeMsg();
-$difficultyLevel = validateDifficultyChoice($rawInput);
-$difficultyConfig = getDifficultyConfig($difficultyLevel);
+do {
+    // Run one full game session
+    playGame();
 
-$levelName = $difficultyConfig['name'];
-$totalChances = $difficultyConfig['chances'];
+    echo PHP_EOL;
+    $playAgain = trim(readline("Do you want to play again? (y/n): "));
 
-echo PHP_EOL . "Great! You have selected the $levelName difficulty level." . PHP_EOL;
-echo "Let's start the game!" . PHP_EOL . PHP_EOL;
-
-// 3. Generate Number
-$randomNumber = generateSecretNumber();
-
-// just for testing
-// echo $randomNumber . "\n\n";
-
-$attempts = 0;
-
-// 4. Game Loop
-while ($totalChances > 0) {
-    $playerGuess = trim(readline("Enter your guess: "));
-
-    if (isInvalidGuess($playerGuess)) continue; // going back to the loop without costing the user an attempt
-    
-    $totalChances--;
-    $attempts++;
-
-    
-    if ($playerGuess == $randomNumber) {
-        echo PHP_EOL . "Congratulations! You've guessed the correct number in $attempts attempts." . PHP_EOL;
-        exit(0);
+    // validate y/n
+    while (!in_array(strtolower($playAgain), ['y', 'n'])) {
+        echo "Invalid choice. Please type 'y' for Yes or 'n' for No." . PHP_EOL . PHP_EOL;
+        $playAgain = trim(readline("Do you want to play again? (y/n): "));
     }
 
-    if ($playerGuess > $randomNumber) {
-        echo "Incorrect! The number is less than $playerGuess." . PHP_EOL;
-    } else {
-        echo "Incorrect! The number is more than $playerGuess." . PHP_EOL;
-    }
+    clearScreen();
 
-    if ($totalChances > 0) {
-        echo "You have $totalChances chances left." . PHP_EOL . PHP_EOL;
-    }
-}
+} while (strtolower($playAgain) === 'y');
 
-// 5. Game Over
-echo PHP_EOL . "Game over! You have no attempts left. The right number was $randomNumber" . PHP_EOL;
-
+echo PHP_EOL . "Thanks for playing! Goodbye." . PHP_EOL;
 
 /* -------------------------------------------------------------------------- */
 /* FUNCTIONS                                                                  */
 /* -------------------------------------------------------------------------- */
 
+function playGame() {
+    // 2. Game Setup
+    $rawInput = welcomeMsg();
+    $difficultyLevel = validateDifficultyChoice($rawInput);
+    $difficultyConfig = getDifficultyConfig($difficultyLevel);
+
+    $levelName = $difficultyConfig['name'];
+    $totalChances = $difficultyConfig['chances'];
+
+    echo PHP_EOL . "Great! You have selected the $levelName difficulty level." . PHP_EOL;
+    echo "Let's start the game!" . PHP_EOL . PHP_EOL;
+
+    // 3. Generate Number
+    $randomNumber = generateSecretNumber();
+
+    // just for testing
+    // echo $randomNumber . "\n\n";
+
+    $attempts = 0;
+
+    // 4. Game Loop
+    while ($totalChances > 0) {
+        $playerGuess = trim(readline("Enter your guess: "));
+
+        if (isInvalidGuess($playerGuess)) continue; // going back to the loop without costing the user an attempt
+        
+        $totalChances--;
+        $attempts++;
+
+        
+        if ($playerGuess == $randomNumber) {
+            echo PHP_EOL . "Congratulations! You've guessed the correct number in $attempts attempts." . PHP_EOL;
+            return;
+        }
+
+        if ($playerGuess > $randomNumber) {
+            echo "Incorrect! The number is less than $playerGuess." . PHP_EOL;
+        } else {
+            echo "Incorrect! The number is more than $playerGuess." . PHP_EOL;
+        }
+
+        if ($totalChances > 0) {
+            echo "You have $totalChances chances left." . PHP_EOL . PHP_EOL;
+        }
+    }
+
+    // 5. Game Over
+    echo PHP_EOL . "Game over! You have no attempts left. The right number was $randomNumber" . PHP_EOL;
+}
 function welcomeMsg() {
     echo PHP_EOL . "Welcome to the Number Guessing Game!" . PHP_EOL;
     echo "I'm thinking of a number between 1 and 100." . PHP_EOL;
@@ -122,4 +141,8 @@ function isInvalidGuess($guessInput) {
 
     return false;
 }
-
+function clearScreen() {
+    // This prints a special code that tells the terminal:
+    // "Clear the whole display" (\033[2J) and "Move cursor to top" (\033[H)
+    echo "\033[2J\033[H";
+}
