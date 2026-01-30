@@ -27,7 +27,7 @@ echo "Let's start the game!" . PHP_EOL . PHP_EOL;
 $randomNumber = generateSecretNumber();
 
 // just for testing
-echo $randomNumber . "\n\n";
+// echo $randomNumber . "\n\n";
 
 $attempts = 0;
 
