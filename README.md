@@ -22,7 +22,7 @@ A fun, interactive command-line game where the player tries to guess a secret nu
 
 2. **Navigate to the folder:**
    ```bash
-   cd php-number-guessing-game
+   cd guess-the-number
    ```
 
 3. **Run the game:**
