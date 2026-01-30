@@ -100,13 +100,15 @@ while ($totalChances != 0) {
 echo PHP_EOL . "Game over! You have no attempts left. The right number was $randomNumber" . PHP_EOL;
 
 function isInvalidGuess($guessInput) {
-    if (!is_numeric($guessInput)) {
-        echo "That's not a number! Try again." . PHP_EOL . PHP_EOL;
+    // This one check handles both "abc" AND "12.5" AND empty inputs
+    if (!ctype_digit($guessInput)) {
+        echo "You didn't enter a valid integer. Choose a whole number between 1 and 100!" . PHP_EOL . PHP_EOL;
         return true;
     }
 
+    // Now we know for sure it's a whole number, so we check the range
     if ($guessInput < 1 || $guessInput > 100) {
-        echo "You have to choose between 1 and 100!" . PHP_EOL . PHP_EOL;
+        echo "Out of range! You have to choose between 1 and 100!" . PHP_EOL . PHP_EOL;
         return true;
     }
 
