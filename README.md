@@ -8,7 +8,7 @@ A fun, interactive command-line game where the player tries to guess a secret nu
 * **Smart Hints:** Provides "Too High" or "Too Low" feedback after every guess.
 * **Replayable:** Loop logic allows you to play multiple rounds without restarting the script.
 * **Clean UI:** Uses ANSI escape codes to clear the terminal for a modern app feel.
-* **Performance:** Tracking: Built-in timer captures exactly how many seconds it takes you to solve the puzzle.
+* **Performance Tracking:** Built-in timer captures exactly how many seconds it takes you to solve the puzzle.
 
 ## 🛠️ Technical Highlights
 * **Modular Code:** Logic is separated into clear functions (`playGame`, `isInvalidGuess`, `getDifficultyConfig`, etc.).
