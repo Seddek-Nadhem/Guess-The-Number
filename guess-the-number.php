@@ -6,6 +6,7 @@
 /* -------------------------------------------------------------------------- */
 
 // 1. Startup Checks
+
 if ($argc > 1) {
     echo "Error: This game does not accept arguments." . PHP_EOL;
     echo "Usage: Just type 'guess-the-number' to start." . PHP_EOL;
@@ -55,6 +56,9 @@ function playGame() {
 
     $attempts = 0;
 
+    // catches current time
+    $startTime = microtime(true);
+
     // 4. Game Loop
     while ($totalChances > 0) {
         $playerGuess = trim(readline("Enter your guess: "));
@@ -66,7 +70,16 @@ function playGame() {
 
         
         if ($playerGuess == $randomNumber) {
+            $endTime = microtime(true);
+
+            // Calculate time taken
+            $timeTaken = $endTime - $startTime;
+            $formattedTime = number_format($timeTaken, 2);
+
             echo PHP_EOL . "Congratulations! You've guessed the correct number in $attempts attempts." . PHP_EOL;
+            echo "It took you exactly $formattedTime seconds." . PHP_EOL;
+
+            // didn't use exit(0) to not terminate the program cus we want to ask the user to play again
             return;
         }
 
