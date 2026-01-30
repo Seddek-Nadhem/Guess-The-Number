@@ -8,7 +8,6 @@ if ($argc > 1) {
     echo "Usage: Just type 'guess-the-number' to start." . PHP_EOL;
     exit(1); // Stop the program with an error code
 }
-
 function welcomeMsg() {
     echo PHP_EOL . "Welcome to the Number Guessing Game!" . PHP_EOL;
     echo "I'm thinking of a number between 1 and 100." . PHP_EOL;
@@ -19,10 +18,8 @@ function welcomeMsg() {
     $userDifficultyChoice = readline("Enter your choice please: ");
     return $userDifficultyChoice; 
 }
-
 // 1. Show menu and get first attempt
 $rawInput = welcomeMsg();
-
 function validateDifficultyChoice($choice) {
     $validOptions = ['1', '2', '3'];
     $attempts = 1;
@@ -43,4 +40,22 @@ function validateDifficultyChoice($choice) {
 }
 
 $difficultyLevel = validateDifficultyChoice($rawInput);
+
+function getDifficultyConfig($choice) {
+    $levels = [
+        '1' => ['name' => 'Easy', 'chances' => 10],
+        '2' => ['name' => 'Medium', 'chances' => 5],
+        '3' => ['name' => 'Hard', 'chances' => 3],
+    ];
+
+    return $levels[$choice];
+}
+
+$difficultyConfig = getDifficultyConfig($difficultyLevel);
+
+$levelName = $difficultyConfig['name'];
+$totalChances = $difficultyConfig['chances'];
+
+echo "Great! You have selected the $levelName difficulty level." . PHP_EOL;
+echo "Let's start the game!" . PHP_EOL;
 
