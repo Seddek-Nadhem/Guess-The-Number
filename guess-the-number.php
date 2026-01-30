@@ -1,21 +1,20 @@
 #!/usr/bin/env php
 <?php
 
-// Check if the user passed any extra arguments
-// $argv[0] is the script name. If there is an $argv[1], they typed something extra.
+/* -------------------------------------------------------------------------- */
+/* MAIN PROGRAM                                                               */
+/* -------------------------------------------------------------------------- */
+
+// 1. Startup Checks
 if ($argc > 1) {
     echo "Error: This game does not accept arguments." . PHP_EOL;
     echo "Usage: Just type 'guess-the-number' to start." . PHP_EOL;
     exit(1); // Stop the program with an error code
 }
 
-welcomeMsg();
-
-// 1. Show menu and get first attempt
+// 2. Game Setup
 $rawInput = welcomeMsg();
-
 $difficultyLevel = validateDifficultyChoice($rawInput);
-
 $difficultyConfig = getDifficultyConfig($difficultyLevel);
 
 $levelName = $difficultyConfig['name'];
@@ -24,6 +23,7 @@ $totalChances = $difficultyConfig['chances'];
 echo PHP_EOL . "Great! You have selected the $levelName difficulty level." . PHP_EOL;
 echo "Let's start the game!" . PHP_EOL . PHP_EOL;
 
+// 3. Generate Number
 $randomNumber = generateSecretNumber();
 
 // just for testing
@@ -31,10 +31,11 @@ echo $randomNumber . "\n\n";
 
 $attempts = 0;
 
-while ($totalChances != 0) {
+// 4. Game Loop
+while ($totalChances > 0) {
     $playerGuess = trim(readline("Enter your guess: "));
 
-    if (isInvalidGuess($playerGuess)) continue;
+    if (isInvalidGuess($playerGuess)) continue; // going back to the loop without costing the user an attempt
     
     $totalChances--;
     $attempts++;
@@ -56,7 +57,13 @@ while ($totalChances != 0) {
     }
 }
 
+// 5. Game Over
 echo PHP_EOL . "Game over! You have no attempts left. The right number was $randomNumber" . PHP_EOL;
+
+
+/* -------------------------------------------------------------------------- */
+/* FUNCTIONS                                                                  */
+/* -------------------------------------------------------------------------- */
 
 function welcomeMsg() {
     echo PHP_EOL . "Welcome to the Number Guessing Game!" . PHP_EOL;
@@ -68,25 +75,6 @@ function welcomeMsg() {
     $userDifficultyChoice = trim(readline("Enter your choice please: "));
 
     return $userDifficultyChoice; 
-}
-function isInvalidGuess($guessInput) {
-    // This one check handles both "abc" AND "12.5" AND empty inputs
-    if (!ctype_digit($guessInput)) {
-        echo "You didn't enter a valid integer. Choose a whole number between 1 and 100!" . PHP_EOL . PHP_EOL;
-        return true;
-    }
-
-    // Now we know for sure it's a whole number, so we check the range
-    if ($guessInput < 1 || $guessInput > 100) {
-        echo "Out of range! You have to choose between 1 and 100!" . PHP_EOL . PHP_EOL;
-        return true;
-    }
-
-    return false;
-}
-function generateSecretNumber() {
-    // includes 1 and 100
-    return rand(1, 100);
 }
 function validateDifficultyChoice($choice) {
     $validOptions = ['1', '2', '3'];
@@ -115,3 +103,23 @@ function getDifficultyConfig($choice) {
 
     return $levels[$choice];
 }
+function generateSecretNumber() {
+    // includes 1 and 100
+    return rand(1, 100);
+}
+function isInvalidGuess($guessInput) {
+    // This one check handles both "abc" AND "12.5" AND empty inputs
+    if (!ctype_digit($guessInput)) {
+        echo "You didn't enter a valid integer. Choose a whole number between 1 and 100!" . PHP_EOL . PHP_EOL;
+        return true;
+    }
+
+    // Now we know for sure it's a whole number, so we check the range
+    if ($guessInput < 1 || $guessInput > 100) {
+        echo "Out of range! You have to choose between 1 and 100!" . PHP_EOL . PHP_EOL;
+        return true;
+    }
+
+    return false;
+}
+
